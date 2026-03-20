@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { SortField, SortOrder, sectors } from "@/lib/nifty50-data"
@@ -30,6 +31,12 @@ export function DashboardHeader({
   lastUpdated,
   onRefresh
 }: DashboardHeaderProps) {
+  const [mounted, setMounted] = useState(false)
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   return (
     <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-40">
       <div className="container mx-auto px-4 py-4">
@@ -50,7 +57,7 @@ export function DashboardHeader({
             
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground hidden sm:inline">
-                Last updated: {lastUpdated.toLocaleTimeString()}
+                Last updated: {mounted ? lastUpdated.toLocaleTimeString() : '--:--:--'}
               </span>
               <Button variant="ghost" size="icon" onClick={onRefresh} className="h-8 w-8">
                 <RefreshCw className="h-4 w-4" />
